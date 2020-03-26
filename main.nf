@@ -1,18 +1,26 @@
 
 numberRepetitionsForProcessA = params.repsProcessA
+numberFilesForProcessA = params.filesProcessA
+processAWriteToDiskMb = params.processAWriteToDiskMb
 processAInput = Channel.from([1] * numberRepetitionsForProcessA)
 
 process processA {
+	publishDir "${params.output}/${task.hash}", mode: 'copy'
+
 	input:
 	val x from processAInput
 
 	output:
 	val x into processAOutput
+	file "*.txt"
 
 	script:
 	"""
 	# Simulate the time the processes takes to finish
 	timeToWait=\$(shuf -i ${params.processATimeRange} -n 1)
+	for i in {1..${numberFilesForProcessA}};
+	do dd if=/dev/urandom of=newfile_\${i}.txt bs=1M count=${params.processAWriteToDiskMb}
+	done;
 	sleep \$timeToWait
 	"""
 }
