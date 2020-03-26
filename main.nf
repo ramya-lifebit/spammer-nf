@@ -20,6 +20,7 @@ process processA {
 	timeToWait=\$(shuf -i ${params.processATimeRange} -n 1)
 	for i in {1..${numberFilesForProcessA}};
 	do dd if=/dev/urandom of=newfile_\${i}.txt bs=1M count=${params.processAWriteToDiskMb}
+	sleep ${params.processATimeBetweenFileCreationInSecs}
 	done;
 	sleep \$timeToWait
 	"""
