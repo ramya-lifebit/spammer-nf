@@ -19,7 +19,7 @@ process processA {
 	# Simulate the time the processes takes to finish
 	timeToWait=\$(shuf -i ${params.processATimeRange} -n 1)
 	for i in {1..${numberFilesForProcessA}};
-	do dd if=/dev/urandom of=newfile_\${i}.txt bs=1M count=${params.processAWriteToDiskMb}
+	do echo teste > file_\${i}.txt
 	sleep ${params.processATimeBetweenFileCreationInSecs}
 	done;
 	sleep \$timeToWait
