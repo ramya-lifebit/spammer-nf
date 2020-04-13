@@ -29,8 +29,6 @@ process processA {
 
 process processB {
 
-	tag "One tag to rule them all"
-
 	input:
 	val x from processAOutput
 
