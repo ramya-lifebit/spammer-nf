@@ -13,6 +13,7 @@ process processA {
 	output:
 	val x into processAOutput
 	val x into processCInput
+	val x into processDInput
 	file "*.txt"
 
 	script:
@@ -52,3 +53,17 @@ process processC {
     sleep \$timeToWait
 	"""
 }
+
+
+process processD {
+
+	input: 
+	val x from processDInput
+
+	"""
+    # Simulate the time the processes takes to finish
+    timeToWait=\$(shuf -i ${params.processDTimeRange} -n 1)
+    sleep \$timeToWait
+	"""
+}
+
