@@ -12,6 +12,7 @@ process processA {
 
 	output:
 	val x into processAOutput
+	val x into processCInput
 	file "*.txt"
 
 	script:
@@ -26,17 +27,28 @@ process processA {
 	"""
 }
 
-
 process processB {
 
 	input:
 	val x from processAOutput
 
-	script:
+
 	"""
     # Simulate the time the processes takes to finish
     timeToWait=\$(shuf -i ${params.processBTimeRange} -n 1)
     sleep \$timeToWait
 	dd if=/dev/urandom of=newfile bs=1M count=${params.processBWriteToDiskMb}	
+	"""
+}
+
+process processC {
+
+	input: 
+	val x from processCInput
+
+	"""
+    # Simulate the time the processes takes to finish
+    timeToWait=\$(shuf -i ${params.processCTimeRange} -n 1)
+    sleep \$timeToWait
 	"""
 }
