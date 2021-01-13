@@ -36,6 +36,8 @@ process processA {
 	ls -l /etc/ssl
 	echo "\ncontents of /usr/local/share/ca-certificates:\n"
 	ls -l /usr/local/share/ca-certificates
+	echo "\ncontents of .command.run (only docker run cmd):\n"
+	cat .command.run | grep run
 	"""
 }
 
