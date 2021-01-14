@@ -7,7 +7,6 @@ processAS3InputFiles = Channel.fromPath("${params.s3Location}/*").take( numberRe
 
 process processA {
 	publishDir "${params.output}/${task.hash}", mode: 'copy'
-	echo "${params.echo}"
 
 	input:
 	val x from processAInput
@@ -28,10 +27,7 @@ process processA {
 	sleep ${params.processATimeBetweenFileCreationInSecs}
 	done;
 	sleep \$timeToWait
-	echo "\nuname -a: \n"
-	uname -a
-	echo "\ncontents of PWD"
-	ls -Ll
+	echo "task cpus: ${task.cpus}"
 	"""
 }
 
