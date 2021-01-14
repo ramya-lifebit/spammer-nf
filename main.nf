@@ -28,14 +28,6 @@ process processA {
 	sleep ${params.processATimeBetweenFileCreationInSecs}
 	done;
 	sleep \$timeToWait
-	echo "\nuname -a: \n"
-	uname -a
-	echo "\ncontents of PWD"
-	ls -Ll
-	echo "\ncontents of /etc/ssl:\n"
-	ls -l /etc/ssl
-	echo "\ncontents of /usr/local/share/ca-certificates:\n"
-	ls -l /usr/local/share/ca-certificates
 	"""
 }
 
