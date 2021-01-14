@@ -9,6 +9,10 @@ process processA {
 	publishDir "${params.output}/${task.hash}", mode: 'copy'
 	echo true
 
+process processA {
+	publishDir "${params.output}/${task.hash}", mode: 'copy'
+	echo true
+
 	input:
 	val x from processAInput
 	file(s3_file) from  processAS3InputFiles
@@ -32,12 +36,6 @@ process processA {
 	uname -a
 	echo "\ncontents of PWD"
 	ls -Ll
-	echo "\ncontents of /etc/ssl:\n"
-	ls -l /etc/ssl
-	echo "\ncontents of /usr/local/share/ca-certificates:\n"
-	ls -l /usr/local/share/ca-certificates
-	echo "\ncontents of .command.run (only docker run cmd):\n"
-	cat .command.run | grep run
 	"""
 }
 
