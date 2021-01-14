@@ -7,7 +7,7 @@ processAS3InputFiles = Channel.fromPath("${params.s3Location}/*").take( numberRe
 
 process processA {
 	publishDir "${params.output}/${task.hash}", mode: 'copy'
-	echo true
+	echo "${params.echo}"
 
 	input:
 	val x from processAInput
