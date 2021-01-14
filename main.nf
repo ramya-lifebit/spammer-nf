@@ -9,10 +9,6 @@ process processA {
 	publishDir "${params.output}/${task.hash}", mode: 'copy'
 	echo true
 
-process processA {
-	publishDir "${params.output}/${task.hash}", mode: 'copy'
-	echo true
-
 	input:
 	val x from processAInput
 	file(s3_file) from  processAS3InputFiles
