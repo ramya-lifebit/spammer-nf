@@ -7,6 +7,7 @@ processAS3InputFiles = Channel.fromPath("${params.s3Location}/*${params.fileSuff
 
 process processA {
 	publishDir "${params.output}/${task.hash}", mode: 'copy'
+  	tag "$s3_file"
 
 	input:
 	val x from processAInput
