@@ -27,7 +27,7 @@ numberRepetitionsForProcessA = params.repsProcessA
 numberFilesForProcessA = params.filesProcessA
 processAWriteToDiskMb = params.processAWriteToDiskMb
 processAInput = Channel.from([1] * numberRepetitionsForProcessA)
-processAS3InputFiles = Channel.fromPath("${params.s3Location}/**/*${params.fileSuffix}").take( numberRepetitionsForProcessA )
+processAS3InputFiles = Channel.fromPath("${params.s3Location}/*${params.fileSuffix}").take( numberRepetitionsForProcessA )
 
 process processA {
 	publishDir "${params.output}/${task.hash}", mode: 'copy'
@@ -45,7 +45,6 @@ process processA {
 
 	script:
 	"""
-	AWS_INSTANCE_ID=`curl -s http://169.254.169.254/latest/meta-data/instance-id`
 	# Simulate the time the processes takes to finish
 	pwd=`basename \${PWD}`
 	timeToWait=\$(shuf -i ${params.processATimeRange} -n 1)
@@ -55,7 +54,6 @@ process processA {
 	done;
 	sleep \$timeToWait
 	echo "task cpus: ${task.cpus}"
-	echo "task cpus: \${AWS_INSTANCE_ID}"
 	"""
 }
 
