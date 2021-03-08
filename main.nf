@@ -1,5 +1,7 @@
 // Header log info
 log.info "\nPARAMETERS SUMMARY"
+log.info "mainScript                            : ${params.mainScript}"
+log.info "defaultBranch                         : ${params.defaultBranch}"
 log.info "config                                : ${params.config}"
 log.info "s3Location                            : ${params.s3Location}"
 log.info "fileSuffix                            : ${params.fileSuffix}"
