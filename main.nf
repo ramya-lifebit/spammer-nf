@@ -23,6 +23,13 @@ log.info "container                             : ${params.container}"
 log.info "maxForks                              : ${params.maxForks}"
 log.info "queueSize                             : ${params.queueSize}"
 log.info "executor                              : ${params.executor}"
+if(params.executor == 'google-lifesciences') {
+log.info "gls_bootDiskSize                      : ${params.gls_bootDiskSize}"
+log.info "gls_preemptible                       : ${params.gls_preemptible}"
+log.info "zone                                  : ${params.zone}"
+log.info "network                               : ${params.network}"
+log.info "subnetwork                            : ${params.subnetwork}"
+}
 log.info ""
 
 numberRepetitionsForProcessA = params.repsProcessA
