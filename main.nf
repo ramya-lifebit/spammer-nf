@@ -3,7 +3,7 @@ log.info "\nPARAMETERS SUMMARY"
 log.info "mainScript                            : ${params.mainScript}"
 log.info "defaultBranch                         : ${params.defaultBranch}"
 log.info "config                                : ${params.config}"
-log.info "s3Location                            : ${params.s3Location}"
+log.info "cloudStorageLocation                  : ${params.cloudStorageLocation}"
 log.info "fileSuffix                            : ${params.fileSuffix}"
 log.info "repsProcessA                          : ${params.repsProcessA}"
 log.info "processAWriteToDiskMb                 : ${params.processAWriteToDiskMb}"
@@ -37,7 +37,7 @@ numberRepetitionsForProcessA = params.repsProcessA
 numberFilesForProcessA = params.filesProcessA
 processAWriteToDiskMb = params.processAWriteToDiskMb
 processAInput = Channel.from([1] * numberRepetitionsForProcessA)
-processAS3InputFiles = Channel.fromPath("${params.s3Location}/*${params.fileSuffix}").take( numberRepetitionsForProcessA )
+processAS3InputFiles = Channel.fromPath("${params.cloudStorageLocation}/*${params.fileSuffix}").take( numberRepetitionsForProcessA )
 
 process processA {
 	publishDir "${params.output}/${task.hash}", mode: 'copy'
