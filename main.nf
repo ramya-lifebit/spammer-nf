@@ -40,8 +40,8 @@ processAInput = Channel.from([1] * numberRepetitionsForProcessA)
 processAS3InputFiles = Channel.fromPath("${params.cloudStorageLocation}/*${params.fileSuffix}").take( numberRepetitionsForProcessA )
 
 process processA {
-	publishDir "${params.output}/${task.hash}", mode: 'copy'
-	tag "cpus: ${task.cpus}, s3 file: ${s3_file}"
+	publishDir "${params.output}/processA/${task.hash}", mode: 'copy'
+	tag "cpus: ${task.cpus}, cloud storage file: ${s3_file}"
 
 	input:
 	val x from processAInput
