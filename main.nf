@@ -29,15 +29,15 @@ numberRepetitionsForProcessA = params.repsProcessA
 numberFilesForProcessA = params.filesProcessA
 processAWriteToDiskMb = params.processAWriteToDiskMb
 processAInput = Channel.from([1] * numberRepetitionsForProcessA)
-processAS3InputFiles = Channel.fromPath("${params.dataLocation}/*${params.fileSuffix}").take( numberRepetitionsForProcessA )
+processACloudStorageInputFiles = Channel.fromPath("${params.dataLocation}/*${params.fileSuffix}").take( numberRepetitionsForProcessA )
 
 process processA {
 	publishDir "${params.output}/${task.hash}", mode: 'copy'
-	tag "cpus: ${task.cpus}, s3 file: ${s3_file}"
+	tag "cpus: ${task.cpus}, cloud storage: ${cloud_storage_file}"
 
 	input:
 	val x from processAInput
-	file(s3_file) from  processAS3InputFiles
+	file(cloud_storage_file) from  processACloudStorageInputFiles
 
 	output:
 	val x into processAOutput
