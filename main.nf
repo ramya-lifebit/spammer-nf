@@ -1,8 +1,12 @@
+// If gs:// or s3:// or https://, else it's local
+fileSystem = params.dataLocation.contains(':') ? params.dataLocation.split(':')[0] : 'local'
+
 // Header log info
 log.info "\nPARAMETERS SUMMARY"
 log.info "mainScript                            : ${params.mainScript}"
 log.info "defaultBranch                         : ${params.defaultBranch}"
 log.info "config                                : ${params.config}"
+log.info "fileSystem                            : ${fileSystem}"
 log.info "dataLocation                          : ${params.dataLocation}"
 log.info "fileSuffix                            : ${params.fileSuffix}"
 log.info "repsProcessA                          : ${params.repsProcessA}"
@@ -29,7 +33,7 @@ numberRepetitionsForProcessA = params.repsProcessA
 numberFilesForProcessA = params.filesProcessA
 processAWriteToDiskMb = params.processAWriteToDiskMb
 processAInput = Channel.from([1] * numberRepetitionsForProcessA)
-processACloudStorageInputFiles = Channel.fromPath("${params.dataLocation}/*${params.fileSuffix}").take( numberRepetitionsForProcessA )
+processAInputFiles = Channel.fromPath("${params.dataLocation}/*${params.fileSuffix}").take( numberRepetitionsForProcessA )
 
 process processA {
 	publishDir "${params.output}/${task.hash}", mode: 'copy'
@@ -37,7 +41,7 @@ process processA {
 
 	input:
 	val x from processAInput
-	file(cloud_storage_file) from  processACloudStorageInputFiles
+	file(a_file) from processAInputFiles
 
 	output:
 	val x into processAOutput
@@ -48,7 +52,8 @@ process processA {
 	script:
 	"""
 	# Simulate the time the processes takes to finish
-	pwd=`basename \${PWD}`
+	pwd=`basename \${PWD} | cut -c1-6`
+	echo \$pwd
 	timeToWait=\$(shuf -i ${params.processATimeRange} -n 1)
 	for i in {1..${numberFilesForProcessA}};
 	do echo test > "\${pwd}"_file_\${i}.txt
