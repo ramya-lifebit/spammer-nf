@@ -1,9 +1,13 @@
+// If gs:// or s3:// or https://, else it's local
+fileSystem = params.dataLocation.contains(':') ? params.dataLocation.split(':')[0] : 'local'
+
 // Header log info
 log.info "\nPARAMETERS SUMMARY"
 log.info "mainScript                            : ${params.mainScript}"
 log.info "defaultBranch                         : ${params.defaultBranch}"
 log.info "config                                : ${params.config}"
-log.info "cloudStorageLocation                  : ${params.cloudStorageLocation}"
+log.info "fileSystem                            : ${fileSystem}"
+log.info "dataLocation                          : ${params.dataLocation}"
 log.info "fileSuffix                            : ${params.fileSuffix}"
 log.info "repsProcessA                          : ${params.repsProcessA}"
 log.info "processAWriteToDiskMb                 : ${params.processAWriteToDiskMb}"
@@ -37,15 +41,15 @@ numberRepetitionsForProcessA = params.repsProcessA
 numberFilesForProcessA = params.filesProcessA
 processAWriteToDiskMb = params.processAWriteToDiskMb
 processAInput = Channel.from([1] * numberRepetitionsForProcessA)
-processAS3InputFiles = Channel.fromPath("${params.cloudStorageLocation}/*${params.fileSuffix}").take( numberRepetitionsForProcessA )
+processAInputFiles = Channel.fromPath("${params.dataLocation}/*${params.fileSuffix}").take( numberRepetitionsForProcessA )
 
 process processA {
-	publishDir "${params.output}/processA/${task.hash}", mode: 'copy'
-	tag "cpus: ${task.cpus}, cloud storage file: ${s3_file}"
+	publishDir "${params.output}/${task.hash}", mode: 'copy'
+	tag "cpus: ${task.cpus}, cloud storage: ${cloud_storage_file}"
 
 	input:
 	val x from processAInput
-	file(s3_file) from  processAS3InputFiles
+	file(a_file) from processAInputFiles
 
 	output:
 	val x into processAOutput
@@ -56,7 +60,8 @@ process processA {
 	script:
 	"""
 	# Simulate the time the processes takes to finish
-	pwd=`basename \${PWD}`
+	pwd=`basename \${PWD} | cut -c1-6`
+	echo \$pwd
 	timeToWait=\$(shuf -i ${params.processATimeRange} -n 1)
 	for i in {1..${numberFilesForProcessA}};
 	do echo test > "\${pwd}"_file_\${i}.txt
