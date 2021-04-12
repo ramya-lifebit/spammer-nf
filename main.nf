@@ -33,7 +33,9 @@ log.info "gls_preemptible                       : ${params.gls_preemptible}"
 log.info "gls_usePrivateAddress                 : ${params.gls_usePrivateAddress}"
 log.info "zone                                  : ${params.zone}"
 log.info "network                               : ${params.network}"
-log.info "subnetwork                            : ${params.subnetwork}"
+log.info "subnetwork                                    : ${params.subnetwork}"
+log.info "lifeSciences.usePrivateAddress  : ${params.gls_usePrivateAddress}"
+log.info "google.lifeSciences.sshDaemon : ${params.gls_sshDaemon}"
 }
 log.info ""
 
@@ -110,4 +112,3 @@ process processD {
     sleep \$timeToWait
 	"""
 }
-
