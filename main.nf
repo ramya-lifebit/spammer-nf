@@ -26,15 +26,21 @@ log.info "container                             : ${params.container}"
 log.info "maxForks                              : ${params.maxForks}"
 log.info "queueSize                             : ${params.queueSize}"
 log.info "executor                              : ${params.executor}"
+if(params.executor == 'awsbatch') {
+log.info "aws_batch_cliPath                     : ${params.aws_batch_cliPath}"
+log.info "aws_batch_fetchInstanceType           : ${params.aws_batch_fetchInstanceType}"
+log.info "aws_batch_process_queue               : ${params.aws_batch_process_queue}"
+log.info "aws_batch_docker_run_options          : ${params.aws_batch_docker_run_options}"
+}
 if(params.executor == 'google-lifesciences') {
 log.info "gls_bootDiskSize                      : ${params.gls_bootDiskSize}"
 log.info "gls_preemptible                       : ${params.gls_preemptible}"
 log.info "gls_usePrivateAddress                 : ${params.gls_usePrivateAddress}"
 log.info "zone                                  : ${params.zone}"
 log.info "network                               : ${params.network}"
-log.info "subnetwork                                    : ${params.subnetwork}"
-log.info "lifeSciences.usePrivateAddress  : ${params.gls_usePrivateAddress}"
-log.info "google.lifeSciences.sshDaemon : ${params.gls_sshDaemon}"
+log.info "subnetwork                            : ${params.subnetwork}"
+log.info "lifeSciences.usePrivateAddress        : ${params.gls_usePrivateAddress}"
+log.info "google.lifeSciences.sshDaemon         : ${params.gls_sshDaemon}"
 }
 log.info ""
 
