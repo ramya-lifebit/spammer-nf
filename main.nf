@@ -25,6 +25,8 @@ log.info "errorStrategy                         : ${params.errorStrategy}"
 log.info "container                             : ${params.container}"
 log.info "maxForks                              : ${params.maxForks}"
 log.info "queueSize                             : ${params.queueSize}"
+log.info "pre_script                            : ${params.pre_script}"
+log.info "post_script                           : ${params.post_script}"
 log.info "executor                              : ${params.executor}"
 if(params.executor == 'awsbatch') {
 log.info "aws_batch_cliPath                     : ${params.aws_batch_cliPath}"
@@ -66,6 +68,7 @@ process processA {
 
 	script:
 	"""
+	${params.pre_script}
 	# Simulate the time the processes takes to finish
 	pwd=`basename \${PWD} | cut -c1-6`
 	echo \$pwd
@@ -76,6 +79,7 @@ process processA {
 	done;
 	sleep \$timeToWait
 	echo "task cpus: ${task.cpus}"
+	${params.post_script}
 	"""
 }
 
@@ -86,10 +90,12 @@ process processB {
 
 
 	"""
+	${params.pre_script}
     # Simulate the time the processes takes to finish
     timeToWait=\$(shuf -i ${params.processBTimeRange} -n 1)
     sleep \$timeToWait
-	dd if=/dev/urandom of=newfile bs=1M count=${params.processBWriteToDiskMb}	
+	dd if=/dev/urandom of=newfile bs=1M count=${params.processBWriteToDiskMb}
+	${params.post_script}
 	"""
 }
 
@@ -99,9 +105,11 @@ process processC {
 	val x from processCInput
 
 	"""
+	${params.pre_script}
     # Simulate the time the processes takes to finish
     timeToWait=\$(shuf -i ${params.processCTimeRange} -n 1)
     sleep \$timeToWait
+	${params.post_script}
 	"""
 }
 
@@ -112,8 +120,10 @@ process processD {
 	val x from processDInput
 
 	"""
+	${params.pre_script}
     # Simulate the time the processes takes to finish
     timeToWait=\$(shuf -i ${params.processDTimeRange} -n 1)
     sleep \$timeToWait
+	${params.post_script}
 	"""
 }
